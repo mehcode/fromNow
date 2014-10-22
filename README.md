@@ -68,6 +68,28 @@ If true, will add `'and'` between penultimate and ultimate chunks.<br>
 Eg: `1 year, 4 hours, 16 minutes` vs `1 year, 4 hours, and 16 minutes`<br>
 Eg: `2 days, 12 hours` vs `2 days and 12 hours`<br>
 
+**vLabel**<br>
+Type: Object or Function. Optional. Default is an internal localization function.<br>
+Is used for localization. Can be an Object with fields 'year', 'month', 'day', 'hour', 'minute' and 'past' and with values an array of labels: the singular and the plural, when applicable. Can be a Function that is passed one of 'year', 'month', 'day', 'hour', 'minute' or 'past' and a size as parameters.<br>
+An example configuration Object for Italian: 
+``` js
+{
+	'year' : ['anno', 'anni'],
+	'month' : ['mese', 'mesi'],
+	'day' : ['giorno', 'giorni'],
+	'hour' : ['ora', 'ore'],
+	'minute' : ['minuto', 'minuti'],
+	'past' : ['fa']
+};
+```
+A (demonstrative) function for English:
+``` js
+function(name, size) {
+	if (name==='past') return " ago";
+	else return size + " " + name + (size > 1 ? "s" : "");
+}
+```
+
 
 ## Installation
 
