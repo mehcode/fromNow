@@ -8,16 +8,34 @@
  * Copyright 2014, LUKEED
  * http://www.lukeed.com
  */
-function fromNow(date, maxChunks, useAgo, useAnd) {
+function fromNow(date, maxChunks, useAgo, useAnd, vLabel) {
   // set default values if left undefined
   maxChunks = typeof maxChunks !== 'undefined' ? maxChunks : 10;
   useAgo = typeof useAgo !== 'undefined' ? useAgo : false;
   useAnd = typeof useAnd !== 'undefined' ? useAnd : false;
-
+  var confLabel = typeof vLabel === 'object' ? vLabel : {
+	  'year':['year', 'years'],
+	  'month':['month', 'months'],
+	  'day':['day', 'days'],
+	  'hour':['hour', 'hours'],
+	  'minute':['minute', 'minutes'], 
+	  'past': ['ago']
+  };
+  var fnLabel = typeof vLabel === 'function' ? vLabel : labelFromConf;
+  
+  /**
+   * Default label function from configuration object (passed or default one for English) 
+   * @param name name of label, eg: year,month,day,minute,second and 'past'
+   * @param size zero or positive to print the size, negative for no-size labels, eg: 'past'
+   */
+  function labelFromConf(name, size) {
+	  return (size > 0 ? size : "") + " " + confLabel[name][size > 1 ? 1 : 0];
+  }
+  
   var milli = (new Date(date) - new Date()),
       ms = Math.abs(milli);
 
-  var isPast = (useAgo && milli < 0) ? ' ago' : '';
+  var isPast = (useAgo && milli < 0) ? fnLabel('past',-1) : "";
 
   var msMinute = 60 * 1000,
       msHour = msMinute * 60,
@@ -31,19 +49,14 @@ function fromNow(date, maxChunks, useAgo, useAnd) {
       hours = Math.floor((ms % msDay) / msHour),
       minutes = Math.floor((ms % msHour) / msMinute);
 
-  var yearsLabel = (years > 1) ? ' years' : ' year',
-      monthsLabel = (months > 1) ? ' months' : ' month',
-      daysLabel = (days > 1) ? ' days' : ' day',
-      hoursLabel = (hours > 1) ? ' hours' : ' hour',
-      minutesLabel = (minutes > 1) ? ' minutes' : ' minute';
-
   var bundle = [
-      years ? years + yearsLabel : null,
-      months ? months + monthsLabel : null,
-      days ? days + daysLabel : null,
-      hours ? hours + hoursLabel : null,
-      minutes ? minutes + minutesLabel : null
+      years ? fnLabel('year', years) : null,
+      months ? fnLabel('month', months) : null,
+      days ? fnLabel('day', days) : null,
+      hours ? fnLabel('hour', hours) : null,
+      minutes ? fnLabel('minute', minutes) : null
   ];
+
 
   var compiled = [], limit = 0;
   bundle.forEach(function(segment, index) {
