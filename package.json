@@ -13,7 +13,7 @@
     "build": "uglifyjs fromNow.js -c -m -o fromNow.min.js",
     "test": "xo"
   },
-  "main": "fromNow.min.js",
+  "main": "fromNow.js",
   "files": [
     "*.js"
   ],
