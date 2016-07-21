@@ -8,7 +8,16 @@
  * Copyright 2014, LUKEED
  * http://www.lukeed.com
  */
-function fromNow(date, maxChunks, useAgo, useAnd, vLabel) {
+(function (root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof exports === 'object') {
+		module.exports = factory;
+	} else {
+		root.fromNow = factory();
+	}
+}(this, function () {
+return function fromNow(date, maxChunks, useAgo, useAnd, vLabel) {
   // set default values if left undefined
   maxChunks = typeof maxChunks !== 'undefined' ? maxChunks : 10;
   useAgo = typeof useAgo !== 'undefined' ? useAgo : false;
@@ -18,20 +27,20 @@ function fromNow(date, maxChunks, useAgo, useAnd, vLabel) {
 	  'month':['month', 'months'],
 	  'day':['day', 'days'],
 	  'hour':['hour', 'hours'],
-	  'minute':['minute', 'minutes'], 
+	  'minute':['minute', 'minutes'],
 	  'past': ['ago']
   };
   var fnLabel = typeof vLabel === 'function' ? vLabel : labelFromConf;
-  
+
   /**
-   * Default label function from configuration object (passed or default one for English) 
+   * Default label function from configuration object (passed or default one for English)
    * @param name name of label, eg: year,month,day,minute,second and 'past'
    * @param size zero or positive to print the size, negative for no-size labels, eg: 'past'
    */
   function labelFromConf(name, size) {
 	  return (size > 0 ? size : "") + " " + confLabel[name][size > 1 ? 1 : 0];
   }
-  
+
   var milli = (new Date(date) - new Date()),
       ms = Math.abs(milli);
 
@@ -82,3 +91,4 @@ function fromNow(date, maxChunks, useAgo, useAnd, vLabel) {
     return compiled;
   }
 }
+}));

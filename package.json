@@ -1,27 +1,46 @@
 {
-  "name": "lukeed-fromnow",
-  "version": "1.0.0",
-  "description": "An extremely lightweight javascript utility for calculating readable time differences from now and past or future dates.",
-  "main": "fromNow.js",
+  "name": "fromnow",
+  "version": "2.1.1",
+  "description": "An extremely lightweight javascript utility for calculating readable time differences from now vs past or future dates.",
+  "license": "MIT",
+  "repository": "lukeed/fromNow",
+  "author": {
+    "name": "Luke Edwards",
+    "email": "luke@lukeed.com",
+    "url": "lukeed.com"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "uglifyjs fromNow.js -c -m -o fromNow.min.js",
+    "test": "xo"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/lukeed/fromNow.git"
-  },
+  "main": "fromNow.min.js",
+  "files": [
+    "*.js"
+  ],
   "keywords": [
+    "ago",
     "date",
     "time",
     "parse",
     "format",
+    "moment",
     "from now",
-    "fromNow"
+    "fromnow"
   ],
-  "author": "Luke Edwards",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lukeed/fromNow/issues"
+  "devDependencies": {
+    "uglify-js": "^2.7.0",
+    "xo": "^0.16.0"
   },
-  "homepage": "https://github.com/lukeed/fromNow"
+  "xo": {
+    "envs": ["browser", "node", "amd"],
+    "rules": {
+      "one-var-declaration-per-line": 1,
+      "no-unused-expressions": 1,
+      "xo/filename-case": 0,
+      "guard-for-in": 1,
+      "wrap-iife": 0,
+      "one-var": 0,
+      "curly": 1
+    }
+  }
 }

@@ -1,56 +1,24 @@
-fromNow
-=======
+# FromNow [![Build Status](https://travis-ci.org/lukeed/fromNow.svg?branch=master)](https://travis-ci.org/lukeed/fromNow)
 
-An extremely lightweight javascript utility for calculating readable time differences from now and past or future dates.
+> An extremely lightweight javascript utility for calculating readable time differences from now vs past or future dates.
 
-## Usage
-fromNow.js only has 1 **required** parameter, a date string.
+2 kb uncompressed. <1 kb minified (before gzip)
 
-### Basic Structure
-``` html
-<div id="past-date">2012-02-12 14:02:47</div>
-<div id="future-date">2014-12-21 14:02:47</div>
-
-<script src="path/to/fromNow.js"></script>
-<script>
-var past = document.getElementById('past-date').innerHTML,
-	future = document.getElementById('future-date').innerHTML;
-
-fromNow(future); // "2 months, 16 hours, 17 minutes"
-</script>
+```javascript
+fromNow(date [, options]);
 ```
 
-### Default Usage
-Yields all, absolute values
-``` js
-fromNow(past);  // "2 years, 8 months, 22 days, 7 hours, 39 minutes"
-fromNow(future);  // "2 months, 16 hours, 17 minutes"
-```
+fromNow.js only has 1 **required** parameter, a date string. You may pass it **any valid datestring**.
 
-### Limit Return Size
-``` js
-fromNow(past, 3); // "2 years, 8 months, 22 days"
-fromNow(future, 2); // "2 months, 16 hours"
-fromNow(future, 1); // "2 months"
-```
+## Installation
 
-### Indicate Past Tense
-``` js
-fromNow(past, 3, true); // "2 years, 8 months, 22 days ago"
-```
+Install with [Bower](http://bower.io) `bower install fromnow`
 
-### Include 'and' in Return
-``` js
-fromNow(past, 3, true, true); // "2 years, 8 months, and 22 days ago"
-fromNow(past, 1, true, true); // "2 years ago"
-fromNow(future, 2, false, true); // "2 months and 16 hours"
-```
+Install with [NPM](http://nodejs.org/) `npm install fromnow`
 
-## Parameters
+Install with Git `git clone https://github.com/lukeed/fromnow.git`
 
-**date**<br>
-Type: string. Required.<br>
-Date string to be calculated.
+## Options
 
 **maxChunks**<br>
 Type: Integer. Optional. Default: all<br>
@@ -64,14 +32,14 @@ Eg: `3 months, 16 minutes` vs `3 months, 16 minutes ago`
 
 **useAnd**<br>
 Type: Boolean. Optional. Default: false<br>
-If true, will add `'and'` between penultimate and ultimate chunks.<br>
+If true, will add `' and '` between penultimate and ultimate chunks.<br>
 Eg: `1 year, 4 hours, 16 minutes` vs `1 year, 4 hours, and 16 minutes`<br>
 Eg: `2 days, 12 hours` vs `2 days and 12 hours`<br>
 
 **vLabel**<br>
 Type: Object or Function. Optional. Default is an internal localization function.<br>
 Is used for localization. Can be an Object with fields 'year', 'month', 'day', 'hour', 'minute' and 'past' and with values an array of labels: the singular and the plural, when applicable. Can be a Function that is passed one of 'year', 'month', 'day', 'hour', 'minute' or 'past' and a size as parameters.<br>
-An example configuration Object for Italian: 
+An example configuration Object for Italian:
 ``` js
 {
 	'year' : ['anno', 'anni'],
@@ -91,13 +59,46 @@ function(name, size) {
 ```
 
 
-## Installation
+### Limit the Output
+```javascript
+fromNow('12/31/2010', {
+  maxChunks: 3
+}); // "4 years, 10 months, 8 days"
 
-Install with [Bower](http://bower.io) `bower install fromNow`
+fromNow('2030-05-20', {
+  maxChunks: 2
+}); // "14 years, 6 months"
+```
 
-Install with [NPM](http://nodejs.org/) `npm install lukeed-fromnow`
+### Indicate Past Tense
+```javascript
+fromNow('12/31/2010', {
+	maxChunks: 3,
+	useAgo: true
+}); // "4 years, 10 months, 8 days ago"
+```
 
-Install with Git `git clone https://github.com/lukeed/fromNow.git`
+### Include 'and' in the Output
+```javascript
+fromNow('12/31/2010', {
+	maxChunks: 3,
+	useAgo: true,
+	useAnd: true
+}); // "4 years, 10 months, and 8 days ago"
+
+fromNow('Wed, 20 Nov 1912 00:00:00 GMT', {
+  maxChunks: 2,
+  useAgo: true,
+  useAnd: true
+}); // "103 years and 23 days ago"
+
+// Does not need 'ago' or 'and'
+fromNow('2030-05-20', {
+  maxChunks: 1,
+  useAgo: true,
+  useAnd: true
+}); // "14 years"
+```
 
 
 ## MIT license
